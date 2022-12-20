@@ -17,12 +17,13 @@ print(mesajlar[0])
 kelimeler = ["free", "txt", "text",
              "mobil", 'you', 'get', 'come', 'call', 'dont']
 
+para_sembol = ["€", "$", "£"]
 X = []
 y = []
 
 for index in range(len(mesajlar)):
     mesaj = mesajlar[index].lower()
-    x_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    x_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     for kelime in kelimeler:
         if kelime in mesaj:
             if kelime == "free":
@@ -43,6 +44,9 @@ for index in range(len(mesajlar)):
                 x_vector[7] = 1
             if kelime == "dont":
                 x_vector[8] = 1
+    for para in para_sembol:
+        if para in mesaj:
+            x_vector[9] = 1
     X.append(x_vector)
 
     if etiketler[index] == "ham":
@@ -50,8 +54,8 @@ for index in range(len(mesajlar)):
     else:
         y.append(1)
 
-ornek_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-ornek = "Hello yusuf, how ar you ?"
+ornek_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+ornek = "Congragulations, you won iphone 14. Please call this number 12314151 for this free prize"
 for kelime in kelimeler:
     if kelime in ornek.lower():
         if kelime == "free":
@@ -72,6 +76,10 @@ for kelime in kelimeler:
             ornek_vector[7] = 1
         if kelime == "dont":
             ornek_vector[8] = 1
+
+for para in para_sembol:
+    if para in mesaj:
+        x_vector[9] = 1
 print(ornek_vector)
 
 # Naive Bayes modeli oluşturulur
