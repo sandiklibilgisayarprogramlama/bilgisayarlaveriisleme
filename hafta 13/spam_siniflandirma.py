@@ -1,4 +1,6 @@
 from sklearn.naive_bayes import GaussianNB
+from string import punctuation
+
 with open("SMSSpamCollection.txt", "r") as dosya:
     belge_liste = dosya.readlines()
     dosya.close()
@@ -23,7 +25,7 @@ y = []
 
 for index in range(len(mesajlar)):
     mesaj = mesajlar[index].lower()
-    x_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    x_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     for kelime in kelimeler:
         if kelime in mesaj:
             if kelime == "free":
@@ -44,16 +46,28 @@ for index in range(len(mesajlar)):
                 x_vector[7] = 1
             if kelime == "dont":
                 x_vector[8] = 1
+
     for para in para_sembol:
         if para in mesaj:
             x_vector[9] = 1
+
+    if "www" in mesaj:
+        x_vector[10] = 1
+
+    for kelime in mesaj.split(" "):
+        if len(kelime) == 11 and str(kelime).isdecimal():
+            x_vector[11] = 1
+
+    if "!" in mesaj:
+        x_vector[12] = 1
+
     X.append(x_vector)
 
     if etiketler[index] == "ham":
         y.append(0)
     else:
         y.append(1)
-
+"""
 ornek_vector = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ornek = "Congragulations, you won iphone 14. Please call this number 12314151 for this free prize"
 for kelime in kelimeler:
@@ -81,13 +95,24 @@ for para in para_sembol:
     if para in mesaj:
         x_vector[9] = 1
 print(ornek_vector)
-
+"""
+X_egitim = X[:4500]
+X_test = X[4500:]
+y_egitim = y[:4500]
+y_test = y[4500:]
 # Naive Bayes modeli oluşturulur
 model = GaussianNB()
 # Model eğitilir
-model.fit(X, y)
+model.fit(X_egitim, y_egitim)
 # Model test edilir
-y_pred = model.predict([ornek_vector])
+y_pred = model.predict(X_test)
 
 # Test sonuçları yazdırılır
 print(y_pred)
+print(y_test)
+
+dogru_sayi = 0
+for index in range(len(y_test)):
+    if y_test[index] == y_pred[index]:
+        dogru_sayi += 1
+print(dogru_sayi)
