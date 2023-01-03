@@ -4,9 +4,9 @@ with open("sinav_veri_seti.txt", "r") as f:
 
 
 def change_label(label):
-    if label == "#0#":
+    if "#0#" in label:
         return "Olumsuz"
-    elif label == "#1#":
+    elif "#1#" in label:
         return "Olumlu"
     else:
         return "Tarafsız"
